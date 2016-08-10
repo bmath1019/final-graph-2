@@ -1,45 +1,68 @@
 
+var data = []
 
-var margin = {
-  left: 20,
-  right: 20,
-  top: 20,
-  bottom: 20
-};
+d3.queue()
+.defer(d3.json, 'data/us-states.json')
+.defer(d3.json, 'data/candidates.json')
+.awaitAll(function (error, results) {
+  if (error) {throw error; }
+  dataMap = results[0];
+  dataCands = results[1];
 
-var width = 950 - margin.left - margin.right;
-var height = 550 - margin.top - margin.bottom;
+  var charts = [
+    new Chart('#chart1')
+  ];
+})
 
-  // set projection
-  var projection = d3.geoAlbersUsa();
+function Chart(selector, variable, title){
+  var chart = this;
+
+  chart.margin = {left: 20, right: 20, top: 20, bottom: 20};
+
+  chart.width = 950 - chart.margin.left - chart.margin.right;
+  chart.height = 550 - chart.margin.top - chart.margin.bottom;
+
+  chart.projection = d3.geoAlbersUsa();
 
       // create path variable
-  var projectionPath = d3.geoPath()
-    .projection(projection);
+  chart.projectionPath = d3.geoPath()
+    .projection(chart.projection);
 
-d3.json('data/us-states.json', function(error,json) {
-
-  projection.translate([width/2, height/2])
-    .scale([width]);
-
-  svg = d3.select('#chart1')
+  chart.svg = d3.select('#chart1')
     .append('svg')
-    .attr('width', width)
-    .attr('height', height)
+    .attr('width', chart.width)
+    .attr('height', chart.height)
     .append("g")
-    .attr("transform", function(){ return "translate(" + margin.left + "," + margin.top + ")" });
+    .attr("transform", function(){ return "translate(" + chart.margin.left + "," + chart.margin.top + ")" });
 
-  svg.selectAll("path")
-    .data(json.features)
+  chart.svg.selectAll("path")
+    .data(dataMap.features)
     .enter()
     .append("path")
     .attr("class", "map")
-    .attr("d", projectionPath)
+    .attr("d", chart.projectionPath)
     .attr("stroke", "black")
     .attr("fill", "#194375");
 
-});
+  chart.update()
 
+}
+
+Chart.prototype.update = function () {
+
+  var chart = this;
+
+  var points = chart.svg.selectAll("circle")
+    .data(dataCands);
+
+  points.enter()
+    .append("circle")
+    .attr("cx", function (d) { return chart.projection(d.cand_long); })
+    .attr("cy", function (d) { return chart.projection(d.cand_lat); })
+    .attr("r", "6")
+    .attr("fill", "red")
+
+}
 
 
 
