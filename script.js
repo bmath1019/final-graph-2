@@ -106,7 +106,7 @@ Chart.prototype = {
       .attr("class","cands")
       .attr("cx", function (d) { return chart.projection([d.cand_long, d.cand_lat]) [0]; })
       .attr("cy", function (d) { return chart.projection([d.cand_long, d.cand_lat]) [1]; })
-      .attr("r", "6");
+      .attr("r", "4");
 
     points.exit().remove()
 
