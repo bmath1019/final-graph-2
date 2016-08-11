@@ -11,3 +11,8 @@ body {
     font-size: 16pt;
     background-color: #F4EFD9;
 }
+
+.cands {
+    fill: #646464;
+    opacity: 0.7;
+}
