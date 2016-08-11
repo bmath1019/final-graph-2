@@ -44,7 +44,11 @@ function Chart(selector, variable, title){
     .attr("stroke", "black")
     .attr("fill", "#194375");
 
-  chart.update()
+    points = chart.svg.selectAll("circle")
+      .append("g")
+      .data(dataCands);
+
+    chart.update();
 
 }
 
@@ -52,13 +56,10 @@ Chart.prototype.update = function () {
 
   var chart = this;
 
-  var points = chart.svg.selectAll("circle")
-    .data(dataCands);
-
   points.enter()
     .append("circle")
-    .attr("cx", function (d) { return chart.projection(d.cand_long); })
-    .attr("cy", function (d) { return chart.projection(d.cand_lat); })
+    .attr("cx", function (d) { return chart.projection([d.cand_long, d.cand_lat]) [0]; })
+    .attr("cy", function (d) { return chart.projection([d.cand_long, d.cand_lat]) [1]; })
     .attr("r", "6")
     .attr("fill", "red")
 
