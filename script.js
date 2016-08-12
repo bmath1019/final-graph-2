@@ -98,7 +98,8 @@ Chart.prototype = {
     if(app.options.filtered) {txData = txData.filter(function (d) {
       return d.time_index <= app.options.time; })};
 
-    points = chart.svg.selectAll("circle").data(txData);
+    points = chart.svg.selectAll("circle")
+      .data(txData, function (d) {return d.can_id});
 
     points
       .enter()
@@ -106,7 +107,8 @@ Chart.prototype = {
       .attr("class","cands")
       .attr("cx", function (d) { return chart.projection([d.cand_long, d.cand_lat]) [0]; })
       .attr("cy", function (d) { return chart.projection([d.cand_long, d.cand_lat]) [1]; })
-      .attr("r", "4");
+      .attr("r", "4")
+      .merge(points);
 
     points.exit().remove()
 
