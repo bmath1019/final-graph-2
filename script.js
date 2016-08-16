@@ -135,6 +135,11 @@ function Chart(selector) {
       .attr("d", area)
       .attr("class","brush");  
 
+    chart.svg2.append("rect")
+      .attr('class','ticker')
+      .attr('y',0)
+      .attr('height',chart.brushheight);
+
   chart.update();
 }
 
@@ -159,6 +164,10 @@ Chart.prototype = {
       .attr("cy", function (d) { return chart.projection([d.cand_long, d.cand_lat]) [1]; })
       .attr("r", "4")
       .merge(points);
+
+    chart.svg2.selectAll(".ticker")
+      .attr('x',function (d) {return chart.x(app.options.time); })
+      .attr('width', 3)
 
     points.exit().remove()
 
