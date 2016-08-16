@@ -65,30 +65,22 @@ function Chart(selector) {
   brushMargin = {left:40, right:20, top: 20,bottom:20};
 
 
-  chart.width = 950 - margin.left - margin.right;
-  chart.height = 570 - margin.top - margin.bottom;
+  chart.width = 950;
+  chart.height = 500;
 
-  chart.brushwidth = 950 - brushMargin.left;
-  chart.brushheight = 80 - brushMargin.top;
-
-  // var zoom = d3.behavior.zoom()
-  //   .translate([0, 0])
-  //   .scale(1)
-  //   .scaleExtent([1, 8])
-  //   .on("zoom", zoomed);
+  chart.brushwidth = 700 - brushMargin.left - brushMargin.right;
+  chart.brushheight = 80 - brushMargin.top - brushMargin.bottom;
 
   chart.projection = d3.geoAlbersUsa();
 
-      // create path variable
+  // Create Map
   chart.projectionPath = d3.geoPath()
     .projection(chart.projection);
 
   chart.svg = d3.select('#chart1')
     .append('svg')
-    .attr('width', chart.width + margin.left + margin.right)
-    .attr('height', chart.height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", function(){ return "translate(" + margin.left + "," + margin.top + ")" });
+    .attr('width', chart.width)
+    .attr('height', chart.height);
 
   chart.svg.selectAll("path")
     .data(dataMap.features)

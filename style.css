@@ -13,6 +13,21 @@ body {
 }
 
 .cands {
-    fill: #646464;
     opacity: 0.7;
+}
+
+.DEM{
+	fill: #3498DB;
+}
+
+.REP{
+    fill: #E74C3C;
+}
+
+.OTH{
+    fill: #D8DB58;
+}
+
+.brush{
+    fill: #194375;
 }
