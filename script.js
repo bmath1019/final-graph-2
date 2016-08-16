@@ -133,12 +133,18 @@ function Chart(selector) {
    chart.svg2.append("path")
       .datum(dataCandAgg)
       .attr("d", area)
-      .attr("class","brush");  
+      .attr("class","brushPath");  
 
     chart.svg2.append("rect")
       .attr('class','ticker')
       .attr('y',0)
       .attr('height',chart.brushheight);
+
+    chart.svg2.append('rect')
+      .attr('class','brushRect')
+      .attr('y',0)
+      .attr('height',chart.brushheight)
+      .attr('x',0);
 
   chart.update();
 }
@@ -167,7 +173,10 @@ Chart.prototype = {
 
     chart.svg2.selectAll(".ticker")
       .attr('x',function (d) {return chart.x(app.options.time); })
-      .attr('width', 3)
+      .attr('width', 2);
+
+    chart.svg2.selectAll(".brushRect")
+      .attr('width',function (d) {return chart.x(app.options.time); })
 
     points.exit().remove()
 

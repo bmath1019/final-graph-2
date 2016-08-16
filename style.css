@@ -13,21 +13,29 @@ body {
 }
 
 .cands {
-    opacity: 0.7;
+
 }
 
 .DEM{
 	fill: #3498DB;
+    opacity: 0.6;
 }
 
 .REP{
     fill: #E74C3C;
+    opacity: 0.6;
 }
 
 .OTH{
     fill: #D8DB58;
+    opacity: 0.6;
 }
 
-.brush{
+.brushPath{
     fill: #194375;
+}
+
+.brushRect{
+    fill: #194375;
+    opacity: .2;
 }
