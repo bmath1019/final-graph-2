@@ -12,8 +12,14 @@ body {
     background-color: #F4EFD9;
 }
 
-.cands {
+.header {
+  background: linear-gradient(to bottom, #194375 0%, #264875 100%);
+  color: #DCDDD8;
+  padding: 1em;
+}
 
+#opening {
+    padding: 1em;
 }
 
 .DEM{
