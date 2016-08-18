@@ -1,4 +1,4 @@
-
+  
 var app;
 
 var START = 1;
@@ -25,6 +25,7 @@ app = {
   options: {
     time: START,
     filtered: true,
+    play: false,
   },
 
   initialize: function (data) {
@@ -41,6 +42,7 @@ app = {
     ];
 
     function incrementTime() {
+      if (app.options.play  )
       app.options.time += 1;
       if (app.options.time > END) {
         app.options.time = START;
