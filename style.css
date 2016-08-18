@@ -48,5 +48,13 @@ body {
 
 #ticker{
     fill: #194375;
+    stroke: #F4EFD9;
+    stroke-width: .25;
     opacity: 1;
 }
+
+#counter{
+    color: #000000;
+    font-weight: bold;
+    font-size: 20px;
+};

@@ -130,16 +130,19 @@ function Chart(selector) {
     .y0(chart.brushheight)
     .y1(function (d) { return chart.y(d.cand_agg); });
 
-   chart.svg2.append("path")
-      .datum(dataCandAgg)
-      .attr("d", area)
-      .attr("class","brushPath");  
+  chart.svg2.append("path")
+    .datum(dataCandAgg)
+    .attr("d", area)
+    .attr("class","brushPath");  
 
-    chart.svg2.append('rect')
-      .attr('id','brushRect')
-      .attr('y',0)
-      .attr('height',chart.brushheight)
-      .attr('x',0);
+  chart.svg2.append('rect')
+    .attr('id','brushRect')
+    .attr('y',0)
+    .attr('height',chart.brushheight)
+    .attr('x',0);
+
+  countText = d3.select("#counter")
+     // return 'Number of Candidates: ' + d.cand_agg});
 
     // coords = d3.selectAll("#brushtime").on("click",d3.mouse(this));
 
@@ -180,7 +183,7 @@ function Chart(selector) {
          dragbarright
             .attr("x", function(d) { return dragx - (dragbarw/2) });
 
-    }
+    };
 
 
   chart.update();
@@ -215,9 +218,13 @@ Chart.prototype = {
     chart.svg2.selectAll("#brushRect")
       .attr('width',function (d) {return chart.x(app.options.time); })
 
-    points.exit().remove()
+    function findAgg(dataCandAgg) { 
+        return dataCandAgg.time_index_2 === app.options.time;
+    }
 
-    // console.log(app.options.time)
+    countText.data(dataCandAgg).html(function (d){return 'Date: ' + app.options.time + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number of Candidates: ' + dataCandAgg.find(findAgg).cand_agg});    
+
+    points.exit().remove();
 
   }
 }
