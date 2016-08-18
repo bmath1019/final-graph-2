@@ -71,7 +71,7 @@ function Chart(selector) {
   chart.height = 500;
 
   chart.brushwidth = 700 - brushMargin.left - brushMargin.right;
-  chart.brushheight = 80 - brushMargin.top - brushMargin.bottom;
+  chart.brushheight = 120 - brushMargin.top - brushMargin.bottom;
 
   chart.projection = d3.geoAlbersUsa();
 
@@ -92,8 +92,6 @@ function Chart(selector) {
     .attr("d", chart.projectionPath)
     .attr("stroke", "black")
     .attr("fill", "#194375");
-
-  // brush
 
   chart.x = d3.scaleLinear()
     .domain([0, d3.max(dataCandAgg,function (d) {return d.time_index_2; } )])
@@ -137,16 +135,53 @@ function Chart(selector) {
       .attr("d", area)
       .attr("class","brushPath");  
 
-    chart.svg2.append("rect")
-      .attr('class','ticker')
-      .attr('y',0)
-      .attr('height',chart.brushheight);
-
     chart.svg2.append('rect')
-      .attr('class','brushRect')
+      .attr('id','brushRect')
       .attr('y',0)
       .attr('height',chart.brushheight)
       .attr('x',0);
+
+    // coords = d3.selectAll("#brushtime").on("click",d3.mouse(this));
+
+    // console.log(coords)
+
+
+
+// Drag ticker
+
+    var ticker = chart.svg2.append("g")
+        .data([{x:0, y: 0}]);
+
+    var dragbarw = 5;
+
+    var dragright = d3.drag()
+        .on("drag", rdragresize);
+
+
+    var dragbarright = ticker.append("rect")
+        .attr("x", function(d) { return d.x + chart.width - (dragbarw/2); })
+        .attr("y", function(d) { return d.y + (dragbarw/2); })
+        .attr("id", "ticker")
+        .attr("height", chart.brushheight)
+        .attr("width", dragbarw)
+        .attr("cursor", "ew-resize")
+        .call(dragright);
+
+
+    function rdragresize(d) {
+         //Max x on the left is x - width 
+         //Max x on the right is width of screen + (dragbarw/2)
+         var dragx = Math.max(d.x + (dragbarw/2), Math.min(chart.width, d.x + width + d3.event.dx));
+
+         //recalculate width
+         width = dragx - d.x;
+
+         //move the right drag handle
+         dragbarright
+            .attr("x", function(d) { return dragx - (dragbarw/2) });
+
+    }
+
 
   chart.update();
 }
@@ -173,11 +208,11 @@ Chart.prototype = {
       .attr("r", "4")
       .merge(points);
 
-    chart.svg2.selectAll(".ticker")
-      .attr('x',function (d) {return chart.x(app.options.time); })
+    chart.svg2.selectAll("#ticker")
+      .attr('x',function (d) {if (app.options.play) {return chart.x(app.options.time);} })
       .attr('width', 2);
 
-    chart.svg2.selectAll(".brushRect")
+    chart.svg2.selectAll("#brushRect")
       .attr('width',function (d) {return chart.x(app.options.time); })
 
     points.exit().remove()

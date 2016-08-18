@@ -41,7 +41,12 @@ body {
     fill: #194375;
 }
 
-.brushRect{
+#brushRect{
     fill: #194375;
     opacity: .2;
+}
+
+#ticker{
+    fill: #194375;
+    opacity: 1;
 }
