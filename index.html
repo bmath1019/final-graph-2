@@ -13,7 +13,7 @@
 
 <div class="header section">
   <div class="container">
-    <h1>Presidential Candidate Registrations</h1>
+    <h1>Registered Candidates for President 2016</h1>
   </div>
 </div>
 
@@ -25,10 +25,10 @@
               <button type="button" id="pause" class="btn btn-primary" onclick="app.options.play=false">Pause</button>
             </div>
             <div class="col-md-3">
-              <p id="dateCounter"></p>
+              <p><span class="counter">Date: </span><span class="count" id="dateCounter"></span></p>
             </div>
             <div class="col-md-7">
-              <p id="candCounter"></p>
+              <p><span class="counter">Number of Candidates: </span><span class="count" id="candCounter"></span></p>
             </div>
         </div>
     </div>
@@ -48,6 +48,25 @@
     <div class="row">
       <div id="brushtime"></div>
     </div>
+  </div>
+</div>
+
+
+<div class="main section">
+  <div class="container">
+    <div class="row">
+      <div class="offset-md-3">
+      <p>Drag to Change the Date</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer section">
+  <div class="container">
+    <p align="right">Data Source: <a href="http://www.fec.gov/data/DataCatalog.do?cf=downloadable"><u>fec.gov</u></a></p>
+    <p align="right">Geocoding: <a href="http://geoservices.tamu.edu/Services/Geocode/"><u>Texas A&M Geoservices</u></a></p>
+    <p align="right">For more information: <a href="https://github.com/bmath1019/final-graph-2"><u>github.com/bmath1019</u></a></p>
   </div>
 </div>
 

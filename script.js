@@ -225,16 +225,14 @@ Chart.prototype = {
       }
     };
 
-    countDateText.data(dataCandAgg).html(function (d){return 'Date: ' + formatTime(app.options.time)});    
-    countCandText.data(dataCandAgg).html(function (d){return 'Number of Candidates: ' + dataCandAgg.find(findAgg).cand_agg});    
+    var formatNumber = d3.format(",");
+
+    countDateText.data(dataCandAgg).html(function (d){return formatTime(app.options.time)});    
+    countCandText.data(dataCandAgg).html(function (d){return formatNumber(dataCandAgg.find(findAgg).cand_agg)});    
 
     points.exit().remove();
 
   }
 }
-
-
-
-
 
 

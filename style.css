@@ -5,10 +5,7 @@ body {
     overflow-x: hidden;
 }
 
-body {
-    font-family: Lato, sans-serif !important;
-    font-weight: 400;
-    font-size: 16pt;
+body {  
     background-color: #F4EFD9;
 }
 
@@ -16,6 +13,12 @@ body {
   background: linear-gradient(to bottom, #194375 0%, #264875 100%);
   color: #DCDDD8;
   padding: 1em;
+}
+
+.footer {
+  background: linear-gradient(to bottom, #194375 100%, #264875 0%);
+  color: #DCDDD8;
+  padding: .5em;
 }
 
 #opening {
@@ -53,9 +56,14 @@ body {
     opacity: 1;
 }
 
-#counter{
+.counter{
     color: #000000;
     font-weight: bold;
+    font-size: 20px;
+}
+
+.count{
+    color: #000000;
     font-size: 20px;
 }
 
