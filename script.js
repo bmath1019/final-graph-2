@@ -2,7 +2,7 @@
 var app;
 
 var parseDate = d3.timeParse("%m/%d/%Y"); 
-var START = parseDate("11/6/2012") ;  
+var START = parseDate("11/7/2012") ;  
 var END = parseDate("08/02/2016");
 
 var MAX_RADIUS = 50;
@@ -154,17 +154,18 @@ function Chart(selector) {
 
 // Drag ticker
 
-    ticker = chart.svg2
-        .append("g")
-        .append("rect")
-        .data([{x: chart.x(app.options.time) , y: 0}])
-        .attr("x", function (d) {return d.x})
-        .attr("y", 0)
-        .attr("id", "dragright")
-        .attr("height", chart.brushheight)
-        .attr("width",5)
-        .attr("fill","#194375")
-        .attr("cursor", "ew-resize");
+  ticker = chart.svg2
+    .append("g")
+    .append("rect")
+    .data([{x: chart.x(app.options.time) , y: 0}])
+    .attr("x", function (d) {return d.x})
+    .attr("y", 0)
+    .attr("id", "dragright")
+    .attr("height", chart.brushheight)
+    .attr("width",5)
+    .attr("fill","#194375")
+    .attr("stroke", "#F4EFD9")
+    .attr("cursor", "ew-resize");
 
   chart.update();
 }
@@ -198,51 +199,31 @@ Chart.prototype = {
 
     function findAgg(dataCandAgg) { 
         return formatTime(dataCandAgg.agg_date) === formatTime(app.options.time);
-    }
+    };
     // source for find function: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
 
+    // DRAG THE BAR! http://bl.ocks.org/mccannf/1629464
 
-    // DRAG THE BAR!
-
-    if(app.options.play) {
-
-      ticker
-          .attr('x',function() {return chart.x(app.options.time)} )
-
+    if (app.options.play) {
+      ticker.attr('x',function() {return chart.x(app.options.time)} )
     }
 
     else {    
       dragbarw = 5;
 
-      var dragright = d3.drag()
-          .on("drag", rdragresize);
+      dragright = d3.drag()
+        .on("drag", rdragresize);
 
       ticker.call(dragright)
 
       function rdragresize(d) {
-          var coord = d3.mouse(this)[0];
+        coord = d3.mouse(this)[0];
 
-          console.log(coord);
+        ticker.attr('x',function() {return coord} )
 
-          ticker
-          .attr('x',function() {return coord} )
-        }
-
-
-// && app.options.play = chart.x.invert(coord)}
-
-    }
-
-
-
-
-
-    // console.log(dragright)  
-
-
-
-
-
+        return app.options.time = chart.x.invert(coord)
+      }
+    };
 
     countDateText.data(dataCandAgg).html(function (d){return 'Date: ' + formatTime(app.options.time)});    
     countCandText.data(dataCandAgg).html(function (d){return 'Number of Candidates: ' + dataCandAgg.find(findAgg).cand_agg});    
