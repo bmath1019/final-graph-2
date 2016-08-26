@@ -1,9 +1,9 @@
   
 var app;
 
-var parseDate = d3.timeParse("%m/%d/%Y"); //https://bl.ocks.org/d3noob/0e276dc70bb9184727ee47d6dd06e915
-var START = parseDate("11/6/2012") ; // 1 !!!!! parseDate("11/1/2012") 
-var END = parseDate("08/02/2016"); // 1366 !!!!! parseDate("08/02/2016")
+var parseDate = d3.timeParse("%m/%d/%Y"); 
+var START = parseDate("11/6/2012") ;  
+var END = parseDate("08/02/2016");
 
 var MAX_RADIUS = 50;
 var TRANSITION_DURATION = 1;
@@ -26,7 +26,7 @@ app = {
   components: [],
 
   options: {
-    time: START, // !!!!!
+    time: START, 
     filtered: true,
     play: false,
   },
@@ -40,7 +40,7 @@ app = {
 
     function incrementTime() {
       if (app.options.play  )
-        app.options.time = d3.timeDay.offset(app.options.time,1); //app.options.time += 1 !!!!! app.options.time = d3.timeDay.offset(app.options.time,1)
+        app.options.time = d3.timeDay.offset(app.options.time,1); 
       if (app.options.time > END) {
         app.options.time = START;
       };
@@ -99,7 +99,7 @@ function Chart(selector) {
     .attr("fill", "#194375");
 
   chart.x = d3.scaleTime()
-    .domain([START,END]) // .domain([0, d3.max(dataCandAgg,function (d) {return d.time_index_2; } )]) !!!!! .domain([d3.min(dataCandAgg, function (d) {return d.agg_date}), d3.max(dataCandAgg,function (d) {return d.agg_date; } )])
+    .domain([START,END]) 
     .range([0,chart.width])
     .nice();  
 
@@ -113,6 +113,7 @@ function Chart(selector) {
 
   yAxis = d3.axisLeft()
     .scale(chart.y)
+    .tickSize(-chart.width)
     .ticks(3);
 
   chart.svg2 = d3.selectAll("#brushtime")
@@ -132,7 +133,7 @@ function Chart(selector) {
     .call(yAxis)
 
   area = d3.area()
-    .x(function (d) { return chart.x(d.agg_date); })  // .x(function (d) { return chart.x(d.time_index_2); }) !!!!! .x(function (d) { return chart.x(d.agg_date); })
+    .x(function (d) { return chart.x(d.agg_date); }) 
     .y0(chart.brushheight)
     .y1(function (d) { return chart.y(d.cand_agg); });
 
@@ -148,46 +149,22 @@ function Chart(selector) {
     .attr('x',0);
 
   countDateText = d3.select("#dateCounter")
-  countCandText = d3.select("#candCounter")     // return 'Number of Candidates: ' + d.cand_agg});
-
-    // coords = d3.selectAll("#brushtime").on("click",d3.mouse(this));
-
-    // console.log(coords)
-
+  countCandText = d3.select("#candCounter") 
 
 
 // Drag ticker
 
-    var ticker = chart.svg2.append("g")
-        .data([{x:0, y: 0}]);
-
-    var dragbarw = 5;
-
-    var dragright = d3.drag()
-        .on("drag", rdragresize);
-
-    var dragbarright = ticker.append("rect")
-        .attr("x", function(d) { return d.x + chart.width - (dragbarw/2); })
-        .attr("y", function(d) { return d.y; })
-        .attr("id", "ticker")
+    ticker = chart.svg2
+        .append("g")
+        .append("rect")
+        .data([{x: chart.x(app.options.time) , y: 0}])
+        .attr("x", function (d) {return d.x})
+        .attr("y", 0)
+        .attr("id", "dragright")
         .attr("height", chart.brushheight)
-        .attr("width", dragbarw)
-        .attr("cursor", "ew-resize")
-        .call(dragright);
-
-    function rdragresize(d) {
-         //Max x on the left is x - width 
-         //Max x on the right is width of screen + (dragbarw/2)
-         var dragx = Math.max(d.x + (dragbarw/2), Math.min(chart.width, d.x + width + d3.event.dx));
-
-         //recalculate width
-         width = dragx - d.x;
-
-         //move the right drag handle
-         dragbarright
-            .attr("x", function(d) { return dragx - (dragbarw/2) });
-
-    };
+        .attr("width",5)
+        .attr("fill","#194375")
+        .attr("cursor", "ew-resize");
 
   chart.update();
 }
@@ -199,11 +176,8 @@ Chart.prototype = {
 
     var txData = app.data.slice();
 
-    // var coords = d3.mouse(this);
-    // console.log(coords)
-
     if(app.options.filtered) {txData = txData.filter(function (d) {
-      return d.reg_date <= app.options.time; })}; //return d.time_index <= app.options.time; })}; !!!!! return d.reg_date <= app.options.time; })};
+      return d.reg_date <= app.options.time; })};
 
     points = chart.svg.selectAll("circle")
       .data(txData, function (d) {return d.can_id});
@@ -217,29 +191,63 @@ Chart.prototype = {
       .attr("r", "4")
       .merge(points);
 
-    chart.svg2.selectAll("#ticker")
-      .attr('x',chart.x(app.options.time))
-      .attr('width', 2);
-
     chart.svg2.selectAll("#brushRect")
       .attr('width',function (d) {return chart.x(app.options.time); })
 
-    formatTime = d3.timeFormat("%m/%-d/%Y")
+    formatTime = d3.timeFormat("%0m/%0d/%Y")
 
     function findAgg(dataCandAgg) { 
         return formatTime(dataCandAgg.agg_date) === formatTime(app.options.time);
     }
     // source for find function: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
 
+
+    // DRAG THE BAR!
+
+    if(app.options.play) {
+
+      ticker
+          .attr('x',function() {return chart.x(app.options.time)} )
+
+    }
+
+    else {    
+      dragbarw = 5;
+
+      var dragright = d3.drag()
+          .on("drag", rdragresize);
+
+      ticker.call(dragright)
+
+      function rdragresize(d) {
+          var coord = d3.mouse(this)[0];
+
+          console.log(coord);
+
+          ticker
+          .attr('x',function() {return coord} )
+        }
+
+
+// && app.options.play = chart.x.invert(coord)}
+
+    }
+
+
+
+
+
+    // console.log(dragright)  
+
+
+
+
+
+
     countDateText.data(dataCandAgg).html(function (d){return 'Date: ' + formatTime(app.options.time)});    
     countCandText.data(dataCandAgg).html(function (d){return 'Number of Candidates: ' + dataCandAgg.find(findAgg).cand_agg});    
 
-
-    // countText.data(dataCandAgg).html(function (d){return 'Date: ' + formatTime(app.options.time) + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number of Candidates: ' + dataCandAgg.find(findAgg)});    
-
     points.exit().remove();
-
-
 
   }
 }

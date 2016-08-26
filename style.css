@@ -57,4 +57,12 @@ body {
     color: #000000;
     font-weight: bold;
     font-size: 20px;
+}
+
+.tick line{
+    opacity: .4;
+}
+
+.y.axis .domain {
+    display: none;
 };
