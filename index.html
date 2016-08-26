@@ -14,20 +14,23 @@
 <div class="header section">
   <div class="container">
     <h1>Registered Candidates for President 2016</h1>
+    <p>Click 'Start' to watch candidates register with the FEC ahead of the 2016 presidential election.</p>
+    <p>Party: <span class="demtext">Democrat</span>,  <span class="reptext">Republican</span>,  <span class="othtext">Other</span></p>
   </div>
 </div>
 
 <div id="opening">
     <div class="container">
         <div class="row">
-            <div class="col-md-2"> 
+            <div class="col-md-3"> 
               <button type="button" id="play" class="btn btn-primary" onclick="app.options.play=true">Start</button>
               <button type="button" id="pause" class="btn btn-primary" onclick="app.options.play=false">Pause</button>
+              <button type="button" id="restart" class="btn btn-primary" onclick="app.options.time=START; app.options.play=true">Restart</button>
             </div>
             <div class="col-md-3">
               <p><span class="counter">Date: </span><span class="count" id="dateCounter"></span></p>
             </div>
-            <div class="col-md-7">
+            <div class="col-md-6">
               <p><span class="counter">Number of Candidates: </span><span class="count" id="candCounter"></span></p>
             </div>
         </div>

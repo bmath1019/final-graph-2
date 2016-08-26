@@ -30,14 +30,26 @@ body {
     opacity: 0.6;
 }
 
+.demtext{
+    color:#3498DB;
+}
+
 .REP{
     fill: #E74C3C;
     opacity: 0.6;
 }
 
+.reptext{
+    color:#E74C3C;
+}
+
 .OTH{
     fill: #D8DB58;
     opacity: 0.6;
+}
+
+.othtext{
+    color:#D8DB58;
 }
 
 .brushPath{

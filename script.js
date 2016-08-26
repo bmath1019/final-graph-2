@@ -38,11 +38,13 @@ app = {
       new Chart('#chart1')
     ];
 
+    d3.select('window').on('resize', app.resize);
+
     function incrementTime() {
-      if (app.options.play  )
+      if (app.options.play)
         app.options.time = d3.timeDay.offset(app.options.time,1); 
       if (app.options.time > END) {
-        app.options.time = START;
+        app.options.time = END; app.options.play = false;
       };
 
       app.update(); 
@@ -50,6 +52,11 @@ app = {
 
     d3.interval(incrementTime, TRANSITION_DURATION);
   },
+
+  resize: function () {
+    app.components.forEach(function (c) { if (c.resize) { c.resize(); }});
+  },
+
 
   update: function (){
     app.components.forEach(function (c) {if (c.update) {c.update(); }});
@@ -150,6 +157,11 @@ function Chart(selector) {
 
   countDateText = d3.select("#dateCounter")
   countCandText = d3.select("#candCounter") 
+
+      function reset() {
+      ticker.attr('x',function() {return chart.x(START)})
+    }
+
 
 
 // Drag ticker
